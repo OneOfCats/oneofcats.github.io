@@ -16,6 +16,11 @@
         <td>
           <form ng-submit="makeSearch()">
             <input type="text" placeholder="Your id" ng-model="userData.userId" pattern="^[0-9]+$" required ng-change="updateUser();" ng-model-options="{ debounce: { default: 1000 } }"><br>
+            <div class="container labels">
+              <label for="rd1"><input type="radio" id="rd1" name="rd1" ng-model="peopleFilterData.sex" value="1"><span></span>Женский</label><br>
+              <label for="rd2"><input type="radio" id="rd2" name="rd1" ng-model="peopleFilterData.sex" value="2"><span></span>Мужской</label><br>
+              <label for="rd3"><input type="radio" id="rd3" name="rd1" ng-model="peopleFilterData.sex" value="" checked="true"><span></span>Любой</label>
+            </div>
             <div class="justify">
                 <div class="select" data-toggle="select-open" data-select>
                   <span>{{searchByThisPublic}}</span>
@@ -31,10 +36,10 @@
       </tr>
       <tr>
         <td id="td3">
-          <div class="user-found" ng-repeat="user in usersFound">
-            <a href="{{user.link}}">
-              <img ng-src="{{user.photo}}">
-              {{user.name}}
+          <div class="user-found" ng-repeat="user in usersFound | peopleFilter:peopleFilterData">
+            <a ng-href="http://vk.com/id{{user.uid}}">
+              <img ng-src="{{user.photo_200}}">
+              {{user.first_name user.last_name}}
             </a>
           </div>
         </td>

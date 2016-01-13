@@ -5,6 +5,7 @@ app.controller('appController', ['$scope', function($scope){
   $scope.userData = {userId: '', userSubscriptions: []};
   $scope.usersFound = new Array();
   $scope.publicCompareNumber = 4;
+  $scope.peopleFilterData = {sex: ''};
 
   $scope.updateUser = function updateUser(){
     if($scope.userData.userId === undefined) return;
@@ -17,6 +18,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.makeSearch = function makeSearch(){
+    $scope.usersFound = new Array();
     var publicId;
     for(var i = 0; i < $scope.userData.userSubscriptions.length; i++){
       if($scope.userData.userSubscriptions[i].name == $scope.searchByThisPublic){
@@ -25,7 +27,7 @@ app.controller('appController', ['$scope', function($scope){
       }
     }
     var offsetLength = 1;
-    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex'}, callUserSearch);
+    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200'}, callUserSearch);
     return requireUsersSearch;
 
     function callUserSearch(r){
@@ -35,7 +37,7 @@ app.controller('appController', ['$scope', function($scope){
       }
       console.log($scope.usersFound.length);
       offsetLength += 1000;
-      VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex'}, callUserSearch);
+      VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200'}, callUserSearch);
     }
   };
 
@@ -43,3 +45,21 @@ app.controller('appController', ['$scope', function($scope){
     $scope.searchByThisPublic = $scope.userData.userSubscriptions[index].name;
   };
 }]);
+
+app.filter('peopleFilter', function(){
+  return function(objects, searchData){
+    var arrayOut = new Array();
+    var check = true;
+    for(var i = 0; i < objects.length; i++){
+      check = true;
+      for(var key in searchData){
+        if(searchData[key] && objects[i][key] != searchData[key]){
+          check = false;
+          break;
+        }
+      }
+      if(check) arrayOut.push(objects[i]);
+    }
+    return arrayOut;
+  };
+});
