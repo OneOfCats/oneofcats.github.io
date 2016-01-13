@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html ng-app='application'>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js" defer></script>
+  <script src="js/ang.js" defer></script>
+  <script src="js/script.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body ng-controller="appController">
+  <div class="wrapper">
+    <table>
+      <tr>
+        <td>
+          <form ng-submit="makeSearch()">
+            <input type="text" placeholder="Your id" ng-model="userData.userId" pattern="^[0-9]+$" required ng-change="updateUser();" ng-model-options="{ debounce: { default: 1000 } }"><br>
+            <div class="justify">
+                <div class="select" data-toggle="select-open" data-select>
+                  <span>{{searchByThisPublic}}</span>
+                  <ul>
+                    <li ng-repeat="public in userData.userSubscriptions" ng-click="changeSearchPublic($index)">{{public.name}}</li>
+                  </ul>
+                </div>
+                <input type="text" ng-model="publicCompareNumber" pattern="^[0-9]+$" class="numeric">
+                <input type="submit" value="Search" class="red-submit">
+            </div>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td id="td3">
+          <div class="user-found" ng-repeat="user in usersFound">
+            <a href="{{user.link}}">
+              <img ng-src="{{user.photo}}">
+              {{user.name}}
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+<script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
+<script type="text/javascript">
+  VK.init({
+    apiId: 5225238
+  });
+</script>
+</html>
