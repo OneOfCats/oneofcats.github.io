@@ -39,7 +39,7 @@
           <div class="user-found" ng-repeat="user in usersFound | peopleFilter:peopleFilterData">
             <a ng-href="http://vk.com/id{{user.uid}}">
               <img ng-src="{{user.photo_200}}">
-              {{user.first_name user.last_name}}
+              {{user.first_name}} {{user.last_name}}
             </a>
           </div>
         </td>
