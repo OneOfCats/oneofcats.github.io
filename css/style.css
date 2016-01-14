@@ -294,12 +294,10 @@ div.select-open ul{
 .user-found a img{
 	display: block;
 	margin: 0 auto 10px;
+	border: 1px solid white;
 }
 .user-found a:hover{
-	color: white;
-}
-.user-found a:hover img{
-	border: 1px solid white;
+	text-decoration: underline;
 }
 #debug{
 	position: absolute;

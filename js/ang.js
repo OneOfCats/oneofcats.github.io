@@ -2,7 +2,7 @@ var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
   $scope.searchByThisPublic = '';
-  $scope.userData = {userId: '', userSubscriptions: []};
+  $scope.userData = {userId: '', userSubscriptions: [], found: 0};
   $scope.usersFound = new Array();
   $scope.publicCompareNumber = 4;
   $scope.peopleFilterData = {sex: ''};
@@ -51,10 +51,10 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.scrollingIndexesChange = function scrollingIndexesChange(destination){
-    if(destination == 'up' && $scope.scrollingIndexes[0] > 0){
+    if(destination == 'down' && $scope.scrollingIndexes[0] > 0){
       $scope.scrollingIndexes[0] -= $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
       $scope.scrollingIndexes[1] -= ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
-    }else if(destination == 'down'){
+    }else if(destination == 'up'){
       $scope.scrollingIndexes[1] += $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
       $scope.scrollingIndexes[0] += ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
     }
@@ -75,6 +75,7 @@ app.filter('peopleFilter', function(){
       }
       if(check) arrayOut.push(objects[i]);
     }
+    searchData.found = arrayOut.length;
     return arrayOut;
   };
 });

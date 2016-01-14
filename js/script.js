@@ -3,7 +3,7 @@ document.addEventListener('keypress', keypressListen);
 
 function clickListen(event){
   var targ = event.target;
-  while(!targ.hasAttribute('data-toggle') && !targ.hasAttribute('data-toggle')){
+  while(!targ.hasAttribute('data-toggle') && !targ.hasAttribute('data-toggle') && !targ.hasAttribute('scroll-up')){
     if(targ.tagName == "INPUT" || targ.tagName == "SELECT" || targ.tagName == "TEXTAREA" || targ.tagName == "A") return;
     if(targ == document.body){
       var toggles = document.querySelectorAll('[data-toggle]');
@@ -16,6 +16,10 @@ function clickListen(event){
   }
   if(targ.hasAttribute('data-toggle')){
     targ.classList.toggle(targ.getAttribute('data-toggle'));
+  }
+  if(targ.hasAttribute('scroll-up')){
+    var elemScrollTo = targ.getAttribute('scroll-up') || targ.parentNode;
+    elemScrollTo.scrollIntoView(top);
   }
   return;
 }

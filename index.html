@@ -34,13 +34,7 @@
       <tr>
         <td>
           <form ng-submit="makeSearch()">
-            <input type="text" placeholder="Ваш id" ng-model="userData.userId" pattern="^[0-9]+$" required><br>
-            <a class="button red-submit" ng-click="updateUser();">Подтвердить</a>
-            <div class="container labels">
-              <label for="rd1"><input type="radio" id="rd1" name="rd1" ng-model="peopleFilterData.sex" value="1"><span></span>Женский</label><br>
-              <label for="rd2"><input type="radio" id="rd2" name="rd1" ng-model="peopleFilterData.sex" value="2"><span></span>Мужской</label><br>
-              <label for="rd3"><input type="radio" id="rd3" name="rd1" ng-model="peopleFilterData.sex" value="" checked="true"><span></span>Любой</label>
-            </div>
+            <input type="text" placeholder="Ваш id" ng-model="userData.userId" pattern="^[0-9]+$" required ng-change="updateUser();"><br>
             <div class="justify">
                 <div class="select" data-toggle="select-open" data-select>
                   <span>{{searchByThisPublic}}</span>
@@ -52,10 +46,16 @@
                 <input type="submit" value="Поиск" class="red-submit">
             </div>
           </form>
+          <div class="container labels">
+            <label for="rd1"><input type="radio" id="rd1" name="rd1" ng-model="peopleFilterData.sex" value="1"><span></span>Женский</label><br>
+            <label for="rd2"><input type="radio" id="rd2" name="rd1" ng-model="peopleFilterData.sex" value="2"><span></span>Мужской</label><br>
+            <label for="rd3"><input type="radio" id="rd3" name="rd1" ng-model="peopleFilterData.sex" value="" checked="true"><span></span>Любой</label>
+          </div>
         </td>
       </tr>
       <tr>
         <td id="td3">
+          <span>Найдено: {{searchData.found}}</span>
           <a ng-click="scrollingIndexesChange('up');">Вверх</a>
           <div class="user-found" ng-repeat="user in usersFound | peopleFilter:peopleFilterData | indexFilter:scrollingIndexes">
             <a ng-href="http://vk.com/id{{user.uid}}">
@@ -63,7 +63,7 @@
               {{user.first_name}} {{user.last_name}}
             </a>
           </div>
-          <a ng-click="scrollingIndexesChange('up');">Вниз</a>
+          <a ng-click="scrollingIndexesChange('up');" scroll-up>Вниз</a>
         </td>
       </tr>
     </table>
