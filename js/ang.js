@@ -1,4 +1,4 @@
-﻿var app = angular.module('application', []);
+var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
   $scope.searchByThisPublic = '';
@@ -6,6 +6,7 @@ app.controller('appController', ['$scope', function($scope){
   $scope.usersFound = new Array();
   $scope.publicCompareNumber = 4;
   $scope.peopleFilterData = {sex: ''};
+  $scope.scrollingIndexes = [0, 10];
 
   $scope.updateUser = function updateUser(){
     if($scope.userData.userId === undefined) return;
@@ -44,6 +45,16 @@ app.controller('appController', ['$scope', function($scope){
   $scope.changeSearchPublic = function changeSearchPublic(index){
     $scope.searchByThisPublic = $scope.userData.userSubscriptions[index].name;
   };
+
+  $scope.scrollingIndexesChange(destination){
+    if(destination == up && $scope.scrollingIndexes[0] > 0){
+      $scope.scrollingIndexes[0] -= $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
+      $scope.scrollingIndexes[1] -= ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
+    }else if(destination == down){
+      $scope.scrollingIndexes[1] += $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
+      $scope.scrollingIndexes[0] += ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
+    }
+  }
 }]);
 
 app.filter('peopleFilter', function(){
@@ -61,5 +72,32 @@ app.filter('peopleFilter', function(){
       if(check) arrayOut.push(objects[i]);
     }
     return arrayOut;
+  };
+});
+
+app.filter('indexFilter', function(){
+  return function(objects, indexData){
+    var arrayOut = new Array();
+    for(var i = indexData[0]; i < indexData[1]; i++){
+      arrayOut.push(objects[i]);
+    }
+    return arrayOut;
+  };
+});
+
+app.filter('commonPublicsFilter', function(){
+  return function(objects, amount){
+    var arrayOut = new Array();
+    for(var i = 0; i < objects.length; i++){
+
+    }
+
+    function comparePublics(r){
+      var requireUserObject = VK.Api.call('users.getSubscriptions', {user_id: parseInt($scope.userData.userId), extended: 1}, function(r){
+        if(!r.response) return;
+        $scope.userData.userSubscriptions = r.response.slice();
+        $scope.searchByThisPublic = $scope.userData.userSubscriptions[0].name;
+      });
+    }
   };
 });
