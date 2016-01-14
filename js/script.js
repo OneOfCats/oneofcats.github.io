@@ -4,7 +4,7 @@ document.addEventListener('keypress', keypressListen);
 function clickListen(event){
   var targ = event.target;
   while(!targ.hasAttribute('data-toggle') && !targ.hasAttribute('data-toggle') && !targ.hasAttribute('scroll-up')){
-    if(targ.tagName == "INPUT" || targ.tagName == "SELECT" || targ.tagName == "TEXTAREA" || targ.tagName == "A") return;
+    if(targ.hasAttribute('[data-toggle]') && (event.target.tagName == "INPUT" || event.target.tagName == "SELECT" || event.target.tagName == "TEXTAREA" || event.target.tagName == "A")) return;
     if(targ == document.body){
       var toggles = document.querySelectorAll('[data-toggle]');
       for(var i = 0; i < toggles.length; i++){

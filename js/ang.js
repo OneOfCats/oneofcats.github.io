@@ -30,7 +30,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.requestCities = function requestCities(str){
-    VK.Api.call('database.getCities', {country_id: $scope.countries.searchByThisCountry.cid, q: str}, function(r){
+    VK.Api.call('database.getCities', {country_id: $scope.countries.searchByThisCountry.cid, q: str, count: 5}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
         $scope.cities.citiesList = r.response;
