@@ -32,7 +32,7 @@ app.controller('appController', ['$scope', function($scope){
     return requireUsersSearch;
 
     function callUserSearch(r){
-      if(r.response.users.length == 0) return;
+      if(!r.response || r.response.users.length == 0) return;
       for(var i = 0; i < r.response.users.length; i++){
         $scope.usersFound.push(r.response.users[i]);
       }
