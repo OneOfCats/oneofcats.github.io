@@ -288,3 +288,15 @@ div.select-open ul{
 .user-found a:hover{
 	color: white;
 }
+#debug{
+	position: absolute;
+	background: black;
+	color: white;
+	width: 300px;
+	padding: 10px;
+	top: 0;
+	left: 0;
+}
+.hidden{
+	visibility: hidden;
+}

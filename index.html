@@ -10,6 +10,22 @@
 </head>
 
 <body ng-controller="appController">
+  <div id="debug" data-toggle-key="hidden">
+    <ul>
+      <li>
+        $scope.userData.userId - {{$scope.userData.userId}}
+      </li>
+      <li>
+        $scope.searchByThisPublic - {{$scope.searchByThisPublic}}
+      </li>
+      <li>
+        $scope.usersFound.length - {{$scope.usersFound.length}}
+      </li>
+      <li>
+        $scope.scrollingIndexes - {{$scope.scrollingIndexes[0]}} {{$scope.scrollingIndexes[1]}}
+      </li>
+    </ul>
+  </div>
   <div class="wrapper">
     <table>
       <tr>
