@@ -89,7 +89,7 @@ h2{
 	margin: 10px 0;
 	overflow: hidden;
 }
-input, div.select{
+input, div.select, a.button{
 	height: 44px;
 	line-height: 44px;
 	text-align: center;
@@ -147,19 +147,21 @@ div.select li{
 div.select ul li:hover{
 	background: rgba(0, 0, 0, 0.1);
 }
-input[type="submit"]{
+input[type="submit"], a.button{
+	display: inline-block;
 	background: #2c4d91;
 	color: white;
 	cursor: pointer;
 	height: 46px;
+	text-decoration: none;
 }
-input[type="submit"].alt-back{
+input[type="submit"].alt-back, a.button.alt-back{
 	background: #193e88;
 }
-input[type="submit"]:hover{
+input[type="submit"]:hover, a.button:hover{
 	background: #3b5da4;
 }
-input[type="submit"].alt-back:hover{
+input[type="submit"].alt-back:hover, , a.button.alt-back:hover{
 	background: #2953a9;
 }
 table input[type="radio"]{
@@ -265,11 +267,11 @@ label{
 .item:hover .del{
 	display: block;
 }
-div.items + input[type="submit"].alt-back, input[type="submit"].red-submit{
+div.items + input[type="submit"].alt-back, input[type="submit"].red-submit, a.red-submit{
 	background: #d14841;
 	margin-bottom: 10px;
 }
-div.items + input[type="submit"].alt-back:hover, div.items + input[type="submit"].alt-back:active, input[type="submit"].red-submit:hover, input[type="submit"].red-submit:active{
+div.items + input[type="submit"].alt-back:hover, div.items + input[type="submit"].alt-back:active, input[type="submit"].red-submit:hover, input[type="submit"].red-submit:active, a.red-submit:active, a.red-submit:hover{
 	background: #e14938;
 }
 div.select-open{
@@ -295,6 +297,9 @@ div.select-open ul{
 }
 .user-found a:hover{
 	color: white;
+}
+.user-found a:hover img{
+	border: 1px solid white;
 }
 #debug{
 	position: absolute;

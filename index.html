@@ -31,7 +31,8 @@
       <tr>
         <td>
           <form ng-submit="makeSearch()">
-            <input type="text" placeholder="Ваш id" ng-model="userData.userId" pattern="^[0-9]+$" required ng-change="updateUser();" ><br>
+            <input type="text" placeholder="Ваш id" ng-model="userData.userId" pattern="^[0-9]+$" required><br>
+            <a class="button red-submit" ng-click="updateUser();">Подтвердить</a>
             <div class="container labels">
               <label for="rd1"><input type="radio" id="rd1" name="rd1" ng-model="peopleFilterData.sex" value="1"><span></span>Женский</label><br>
               <label for="rd2"><input type="radio" id="rd2" name="rd1" ng-model="peopleFilterData.sex" value="2"><span></span>Мужской</label><br>
@@ -45,7 +46,7 @@
                   </ul>
                 </div>
                 <input type="text" ng-model="publicCompareNumber" pattern="^[0-9]+$" class="numeric">
-                <input type="submit" value="Search" class="red-submit">
+                <input type="submit" value="Поиск" class="red-submit">
             </div>
           </form>
         </td>

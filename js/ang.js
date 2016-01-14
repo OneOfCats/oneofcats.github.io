@@ -47,10 +47,10 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.scrollingIndexesChange = function scrollingIndexesChange(destination){
-    if(destination == up && $scope.scrollingIndexes[0] > 0){
+    if(destination == 'up' && $scope.scrollingIndexes[0] > 0){
       $scope.scrollingIndexes[0] -= $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
       $scope.scrollingIndexes[1] -= ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
-    }else if(destination == down){
+    }else if(destination == 'down'){
       $scope.scrollingIndexes[1] += $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
       $scope.scrollingIndexes[0] += ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
     }
