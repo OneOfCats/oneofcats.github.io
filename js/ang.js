@@ -14,11 +14,12 @@ app.controller('appController', ['$scope', function($scope){
   getAllCountries($scope.countries.countriesList); //Получить список основных стран
   $scope.cities = {citiesList: new Array(), searchByThisCity: {}};
 
-  function getAllCountries(storage){ //Получить список основных стран
+  function getAllCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
-        storage = r.response;
+        $scope.countries.countriesList = r.response;
+        $scope.countries.searchByThisCountry = $scope.countries.countriesList[0];
       });
     });
   };
