@@ -6,7 +6,7 @@ app.controller('appController', ['$scope', function($scope){
   $scope.usersFound = new Array(); //Все подписчики паблика
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
   $scope.peopleFilterData = {sex: '', city: ''}; //Поля для фильтра
-  $scope.scrollingIndex = 10; //
+  $scope.usersLimit = 10; //Сколько видно пользователей в прокрутке
   $scope.usersFilteredAmount = 0; //Окончательное кол-во отфильтрованных подписчиков
   $scope.allCities = new Array(); //Все id городов найденных подписчиков
   $scope.allCitiesNames = new Array(); //Все названия городов
@@ -73,7 +73,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.showMore = function showMore(){
-    $scope.scrollingIndex += 10;
+    $scope.usersLimit += 10;
   };
 
   $scope.changeSearchCity = function changeSearchCity(index){
@@ -100,6 +100,8 @@ app.filter('peopleFilter', function(){
     return arrayOut;
   };
 });
+
+
 
 app.filter('indexFilter', function(){
   return function(objects, maxIndex){
