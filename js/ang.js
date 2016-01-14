@@ -46,7 +46,7 @@ app.controller('appController', ['$scope', function($scope){
     $scope.searchByThisPublic = $scope.userData.userSubscriptions[index].name;
   };
 
-  $scope.scrollingIndexesChange(destination){
+  $scope.scrollingIndexesChange = function scrollingIndexesChange(destination){
     if(destination == up && $scope.scrollingIndexes[0] > 0){
       $scope.scrollingIndexes[0] -= $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
       $scope.scrollingIndexes[1] -= ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
