@@ -50,7 +50,7 @@
                   </ul>
                 </div>
                 <div class="select" data-toggle="select-open" data-select>
-                  <input type="text" placeholder="Город" ng-change="requestCities(cities.searchByThisCity);" ng-model="cities.searchByThisCity">
+                  <input type="text" placeholder="Город" ng-change="requestCities(cities.searchByThisCity.title);" ng-model="cities.searchByThisCity.title">
                   <ul>
                     <li ng-repeat="city in cities.citiesList" ng-click="changeSearchCity($index)">{{city.title}}</li>
                   </ul>
