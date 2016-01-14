@@ -10,8 +10,32 @@ app.controller('appController', ['$scope', function($scope){
   $scope.usersFilteredAmount = 0; //Окончательное кол-во отфильтрованных подписчиков
   $scope.allCities = new Array(); //Все id городов найденных подписчиков
   $scope.allCitiesNames = new Array(); //Все названия городов
-  $scope.searchByThisCity = {id: 0, name: ''};
+  $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
+  getAllCountries($scope.countries.countriesList); //Получить список основных стран
+  $scope.cities = {citiesList: new Array(), searchByThisCity: {}};
 
+  function getAllCountries(storage){ //Получить список основных стран
+    VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
+      $scope.$apply(function(){
+        if(!r.response) return;
+        storage = r.response;
+      });
+    });
+  };
+
+  $scope.changeSearchCountry = function changeSearchCountry(index){
+    $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
+
+  };
+
+  $scope.requestCities = function requestCities(str){
+    VK.Api.call('database.getCities', {country_id: $scope.countries.searchByThisCountry.cid, q: str}, function(r){
+      $scope.$apply(function(){
+        if(!r.response) return;
+        $scope.cities.citiesList = r.response;
+      });
+    });
+  };
 
   $scope.updateUser = function updateUser(){
     if($scope.userData.userId === undefined) return;
@@ -81,8 +105,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.changeSearchCity = function changeSearchCity(index){
-    $scope.searchByThisCity.id = $scope.allCities[index];
-    $scope.searchByThisCity.name = $scope.allCitiesNames[index];
+    $scope.cities.searchByThisCity = $scope.cities.citiesList[index];
   };
 }]);
 

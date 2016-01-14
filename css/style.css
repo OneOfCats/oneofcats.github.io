@@ -279,6 +279,7 @@ div.select-open{
 }
 div.select-open ul{
 	height: auto;
+	z-index: 1;
 }
 
 .user-found{
@@ -310,4 +311,7 @@ div.select-open ul{
 }
 .hidden{
 	visibility: hidden;
+}
+.select input[type="text"]{
+	margin: 0;
 }

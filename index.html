@@ -44,9 +44,15 @@
                 </div>
                 <input type="text" ng-model="publicCompareNumber" pattern="^[0-9]+$" class="numeric">
                 <div class="select" data-toggle="select-open" data-select>
-                  <span>{{searchByThisCity.name}}</span>
+                  <span>{{countries.searchByThisCountry.title}}</span>
                   <ul>
-                    <li ng-repeat="cityName in $scope.allCitiesNames" ng-click="changeSearchCity($index)">{{cityName}}</li>
+                    <li ng-repeat="country in countries.countriesList" ng-click="changeSearchCountry($index)">{{country.title}}</li>
+                  </ul>
+                </div>
+                <div class="select" data-toggle="select-open" data-select>
+                  <input type="text" placeholder="Город" ng-change="requestCities(cities.searchByThisCity);" ng-model="cities.searchByThisCity">
+                  <ul>
+                    <li ng-repeat="city in cities.citiesList" ng-click="changeSearchCity($index)">{{city.title}}</li>
                   </ul>
                 </div>
                 <input type="submit" value="Поиск" class="red-submit">
