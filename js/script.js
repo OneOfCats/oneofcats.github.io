@@ -1,5 +1,5 @@
 ﻿document.addEventListener('click', clickListen);
-document.addEventListener('keypress', clickListen);
+document.addEventListener('keypress', keypressListen);
 
 function clickListen(event){
   var targ = event.target;
