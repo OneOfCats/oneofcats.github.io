@@ -57,7 +57,7 @@ app.controller('appController', ['$scope', function($scope){
     function parseCities(){ //Получение названий городов
       for(var i = 0; i < $scope.usersFound.length; i++){
         if($scope.allCities.indexOf($scope.usersFound[i].city) != -1) continue;
-        $scope.allCities.push($scope.usersFound.city);
+        $scope.allCities.push($scope.usersFound[i].city);
       }
       VK.Api.call('database.getCitiesById', {city_ids: $scope.allCities}, function(r){
         $scope.$apply(function(){
