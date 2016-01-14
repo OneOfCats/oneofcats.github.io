@@ -21,6 +21,9 @@ function clickListen(event){
     var elemScrollTo = targ.getAttribute('scroll-up') || targ.parentNode;
     elemScrollTo.scrollIntoView(top);
   }
+  if(targ.hasAttribute('inactive')){
+    event.preventDefault();
+  }
   return;
 }
 

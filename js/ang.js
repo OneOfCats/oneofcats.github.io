@@ -1,12 +1,17 @@
 var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
-  $scope.searchByThisPublic = '';
-  $scope.userData = {userId: '', userSubscriptions: [], found: 0};
-  $scope.usersFound = new Array();
-  $scope.publicCompareNumber = 4;
-  $scope.peopleFilterData = {sex: ''};
-  $scope.scrollingIndexes = [0, 10];
+  $scope.searchByThisPublic = ''; //По какому паблику искать, название
+  $scope.userData = {userId: '', userSubscriptions: []}; //Инфа о пользователе
+  $scope.usersFound = new Array(); //Все подписчики паблика
+  $scope.publicCompareNumber = 4; //Сколько общих пабликов
+  $scope.peopleFilterData = {sex: '', city: ''}; //Поля для фильтра
+  $scope.scrollingIndex = 10; //
+  $scope.usersFilteredAmount = 0; //Окончательное кол-во отфильтрованных подписчиков
+  $scope.allCities = new Array(); //Все id городов найденных подписчиков
+  $scope.allCitiesNames = new Array(); //Все названия городов
+  $scope.searchByThisCity = {id: 0, name: ''};
+
 
   $scope.updateUser = function updateUser(){
     if($scope.userData.userId === undefined) return;
@@ -30,39 +35,55 @@ app.controller('appController', ['$scope', function($scope){
       }
     }
     var offsetLength = 1;
-    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200'}, callUserSearch);
+    //Получить всех подписчиков
+    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
     return requireUsersSearch;
 
     function callUserSearch(r){
-      if(!r.response || r.response.users.length == 0) return;
+      if(!r.response || r.response.users.length == 0){ //Когда все подписчики получены, получить список названий городов
+        parseCities();
+        return;
+      }
       $scope.$apply(function(){
         for(var i = 0; i < r.response.users.length; i++){
           $scope.usersFound.push(r.response.users[i]);
         }
         console.log($scope.usersFound.length);
         offsetLength += 1000;
-        VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200'}, callUserSearch);
+        VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
+      });
+    }
+
+    function parseCities(){ //Получение названий городов
+      $scope.$apply(function(){
+        VK.Api.call('database.getCitiesById', {city_ids: $scope.allCities}, function(r){
+          for(var i = 0; i < r.response.length; i++){
+            $scope.allCitiesNames.push(r.response[i].name);
+          }
+          $scope.searchByThisCity = {id: $scope.allCities[0], name: $scope.allCitiesNames[0]};
+        });
       });
     }
   };
+
+
 
   $scope.changeSearchPublic = function changeSearchPublic(index){
     $scope.searchByThisPublic = $scope.userData.userSubscriptions[index].name;
   };
 
-  $scope.scrollingIndexesChange = function scrollingIndexesChange(destination){
-    if(destination == 'down' && $scope.scrollingIndexes[0] > 0){
-      $scope.scrollingIndexes[0] -= $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
-      $scope.scrollingIndexes[1] -= ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
-    }else if(destination == 'up'){
-      $scope.scrollingIndexes[1] += $scope.scrollingIndexes[1] - $scope.scrollingIndexes[0];
-      $scope.scrollingIndexes[0] += ($scope.scrollingIndexes[1] - $scope.scrollingIndexes[0]) / 2;
-    }
-  }
+  $scope.showMore = function showMore(){
+    $scope.scrollingIndex += 10;
+  };
+
+  $scope.changeSearchCity = function changeSearchCity(index){
+    $scope.searchByThisCity.id = $scope.allCities[index];
+    $scope.searchByThisCity.name = $scope.allCitiesNames[index];
+  };
 }]);
 
 app.filter('peopleFilter', function(){
-  return function(objects, searchData){
+  return function(objects, searchData, usersFilteredAmount){
     var arrayOut = new Array();
     var check = true;
     for(var i = 0; i < objects.length; i++){
@@ -75,18 +96,26 @@ app.filter('peopleFilter', function(){
       }
       if(check) arrayOut.push(objects[i]);
     }
-    searchData.found = arrayOut.length;
+    usersFilteredAmount = arrayOut.length;
     return arrayOut;
   };
 });
 
 app.filter('indexFilter', function(){
-  return function(objects, indexData){
+  return function(objects, maxIndex){
     var arrayOut = new Array();
+    var checked = 0;
+
+
+
     for(var i = indexData[0]; i < indexData[1]; i++){
       arrayOut.push(objects[i]);
     }
     return arrayOut;
+
+    function checkUser(r){
+
+    }
   };
 });
 

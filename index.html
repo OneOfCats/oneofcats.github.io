@@ -10,7 +10,7 @@
 </head>
 
 <body ng-controller="appController">
-  <div id="debug" data-toggle-key="hidden">
+  <div id="debug" data-toggle-key="hidden" class="hidden">
     <ul>
       <li>
         $scope.userData.userId - {{userData.userId}}
@@ -25,7 +25,7 @@
         $scope.usersFound.length - {{usersFound.length}}
       </li>
       <li>
-        $scope.scrollingIndexes - {{scrollingIndexes[0]}} {{scrollingIndexes[1]}}
+        $scope.scrollingIndex - {{scrollingIndex}}
       </li>
     </ul>
   </div>
@@ -43,6 +43,12 @@
                   </ul>
                 </div>
                 <input type="text" ng-model="publicCompareNumber" pattern="^[0-9]+$" class="numeric">
+                <div class="select" data-toggle="select-open" data-select>
+                  <span>{{searchByThisCity.name}}</span>
+                  <ul>
+                    <li ng-repeat="cityName in $scope.allCitiesNames" ng-click="changeSearchCity($index)">{{cityName}}</li>
+                  </ul>
+                </div>
                 <input type="submit" value="Поиск" class="red-submit">
             </div>
           </form>
@@ -55,15 +61,14 @@
       </tr>
       <tr>
         <td id="td3">
-          <span>Найдено: {{searchData.found}}</span>
-          <a ng-click="scrollingIndexesChange('up');">Вверх</a>
-          <div class="user-found" ng-repeat="user in usersFound | peopleFilter:peopleFilterData | indexFilter:scrollingIndexes">
+          <span>Найдено: {{usersFilteredAmount}}</span><br>
+          <div class="user-found" ng-repeat="user in usersFound | peopleFilter:peopleFilterData:usersFilteredAmount | indexFilter:scrollingIndex">
             <a ng-href="http://vk.com/id{{user.uid}}">
               <img ng-src="{{user.photo_200}}">
               {{user.first_name}} {{user.last_name}}
             </a>
           </div>
-          <a ng-click="scrollingIndexesChange('up');" scroll-up>Вниз</a>
+          <a ng-click="showMore();" inactive >Показать ещё</a>
         </td>
       </tr>
     </table>
