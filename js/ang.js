@@ -1,14 +1,13 @@
 var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
-  $scope.searchByThisPublic = {id: 0, name: ''}; //По какому паблику искать, название
   $scope.userData = {userId: '', userSubscriptions: []}; //Инфа о пользователе
+  $scope.searchByThisPublic = {id: 0, name: ''}; //По какому паблику искать, id и название
   $scope.usersFound = new Array(); //Все подписчики паблика
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
   $scope.peopleFilterData = {sex: '', city: 0}; //Поля для фильтра
   $scope.usersLimit = 10; //Сколько видно пользователей в прокрутке
-  $scope.allCities = new Array(); //Все id городов найденных подписчиков
-  $scope.allCitiesNames = new Array(); //Все названия городов
+  
   $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
   $scope.cities = {citiesList: new Array(), searchByThisCity: {title: ''}}; //Объект, хранящий все найденные по строке города (в функции requestCities) и город, по которому ищем сейчас (ниже)
   Object.defineProperty($scope.cities.searchByThisCity, 'cid', {enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра

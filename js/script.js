@@ -3,8 +3,8 @@ document.addEventListener('keypress', keypressListen);
 
 function clickListen(event){
   var targ = event.target;
+  var input = event.target.tagName == "INPUT" || event.target.tagName == "SELECT" || event.target.tagName == "TEXTAREA" || event.target.tagName == "A";
   while(!targ.hasAttribute('data-toggle') && !targ.hasAttribute('data-toggle') && !targ.hasAttribute('scroll-up')){
-    if(targ.hasAttribute('[data-toggle]') && (event.target.tagName == "INPUT" || event.target.tagName == "SELECT" || event.target.tagName == "TEXTAREA" || event.target.tagName == "A")) return;
     if(targ == document.body){
       var toggles = document.querySelectorAll('[data-toggle]');
       for(var i = 0; i < toggles.length; i++){
@@ -15,7 +15,11 @@ function clickListen(event){
     targ = targ.parentNode;
   }
   if(targ.hasAttribute('data-toggle')){
-    targ.classList.toggle(targ.getAttribute('data-toggle'));
+    if(input){
+      targ.classList.add(targ.getAttribute('data-toggle'));
+    }else{
+      targ.classList.toggle(targ.getAttribute('data-toggle'));
+    }
   }
   if(targ.hasAttribute('scroll-up')){
     var elemScrollTo = targ.getAttribute('scroll-up') || targ.parentNode;
