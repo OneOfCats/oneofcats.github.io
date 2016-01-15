@@ -10,11 +10,11 @@ app.controller('appController', ['$scope', function($scope){
   $scope.allCities = new Array(); //Все id городов найденных подписчиков
   $scope.allCitiesNames = new Array(); //Все названия городов
   $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
-  getAllCountries($scope.countries.countriesList); //Получить список основных стран
   $scope.cities = {citiesList: new Array(), searchByThisCity: {title: ''}}; //Объект, хранящий все найденные по строке города (в функции requestCities) и город, по которому ищем сейчас (ниже)
   Object.defineProperty($scope.cities.searchByThisCity, 'cid', {enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра
     $scope.peopleFilterData.city = value;
   }});
+  getAllCountries($scope.countries.countriesList); //Получить список основных стран
 
   function getAllCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
