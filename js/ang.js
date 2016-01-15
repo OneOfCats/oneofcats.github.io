@@ -95,8 +95,8 @@ app.controller('appController', ['$scope', function($scope){
           for(var i = 0; i < r.response.length; i++){
             $scope.allCitiesNames.push(r.response[i].name);
           }
-          $scope.searchByThisCity.cid = $scope.allCities[0];
-          $scope.searchByThisCity.title = $scope.allCitiesNames[0];
+          $scope.cities.searchByThisCity.cid = $scope.allCities[0];
+          $scope.cities.searchByThisCity.title = $scope.allCitiesNames[0];
         });
       });
     }
