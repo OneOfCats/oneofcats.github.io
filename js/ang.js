@@ -38,7 +38,6 @@ app.controller('appController', ['$scope', function($scope){
         if(!r.response) return;
         $scope.cities.citiesList = r.response;
         $scope.cities.searchByThisCity.cid = $scope.cities.citiesList[0].cid;
-        $scope.cities.searchByThisCity.title = $scope.cities.citiesList[0].title;
         $scope.usersLimit = 10;
       });
     });
