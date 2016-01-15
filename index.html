@@ -60,18 +60,21 @@
       <tr>
         <td id="td3">
           <div class="container">
+
             <div class="select" data-toggle="select-open" data-select>
               <span>{{countries.searchByThisCountry.title}}</span>
               <ul>
                 <li ng-repeat="country in countries.countriesList" ng-click="changeSearchCountry($index)">{{country.title}}</li>
               </ul>
             </div>
+
             <div class="select" data-toggle="select-open" data-select>
               <input type="text" placeholder="Город" ng-change="requestCities(cities.searchByThisCity.title);" ng-model="cities.searchByThisCity.title">
               <ul>
                 <li ng-repeat="city in cities.citiesList" ng-click="changeSearchCity($index)">{{city.title}}</li>
               </ul>
             </div>
+            
           </div>
           <span>Найдено: {{filtered.length}}</span><br>
           <div class="user-found" ng-repeat="user in (filtered = (usersFound | peopleFilter:peopleFilterData)) | limitTo: usersLimit">

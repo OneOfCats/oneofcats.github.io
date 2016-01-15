@@ -28,16 +28,11 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.changeSearchCountry = function changeSearchCountry(index){
     $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
-    $scope.cities.citiesList = new Array(); //Когда меняем страну для поиска, нужно обнулить города
-    $scope.cities.searchByThisCity.cid = 0;
-    $scope.cities.searchByThisCity.title = '';
+    $scope.cities.searchByThisCity.title = ''; //Обнуляем города после изменения страны поиска
+    $scope.requestCities('');
   };
 
   $scope.requestCities = function requestCities(str){
-    if(!str || str.length == 0){
-      $scope.cities.searchByThisCity.cid = '';
-      return;
-    }
     VK.Api.call('database.getCities', {country_id: $scope.countries.searchByThisCountry.cid, q: str, count: 5}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
