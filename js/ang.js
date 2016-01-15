@@ -21,7 +21,7 @@ app.controller('appController', ['$scope', function($scope){
       $scope.$apply(function(){
         if(!r.response) return;
         $scope.countries.countriesList = r.response;
-        $scope.countries.searchByThisCountry = $scope.countries.countriesList[0];
+        $scope.changeSearchCountry(1);
       });
     });
   };
@@ -29,7 +29,7 @@ app.controller('appController', ['$scope', function($scope){
   $scope.changeSearchCountry = function changeSearchCountry(index){
     $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
     $scope.cities.citiesList = new Array(); //Когда меняем страну для поиска, нужно обнулить города
-    $scope.cities.searchByThisCity.cid = '';
+    $scope.cities.searchByThisCity.cid = 1;
     $scope.cities.searchByThisCity.title = '';
   };
 
