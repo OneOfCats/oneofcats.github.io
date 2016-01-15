@@ -34,6 +34,10 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.requestCities = function requestCities(str){
+    if(!str || str.length == 0){
+      $scope.cities.searchByThisCity.cid = '';
+      return;
+    }
     VK.Api.call('database.getCities', {country_id: $scope.countries.searchByThisCountry.cid, q: str, count: 5}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
