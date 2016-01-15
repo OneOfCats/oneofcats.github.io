@@ -28,6 +28,9 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.changeSearchCountry = function changeSearchCountry(index){
     $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
+    $scope.cities.citiesList = new Array(); //Когда меняем страну для поиска, нужно обнулить города
+    $scope.cities.searchByThisCity.cid = 0;
+    $scope.cities.searchByThisCity.title = '';
   };
 
   $scope.requestCities = function requestCities(str){
