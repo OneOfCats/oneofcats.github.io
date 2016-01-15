@@ -58,17 +58,13 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.makeSearch = function makeSearch(){
     $scope.usersFound = new Array();
-    var publicId;
-    var offsetLength = 1;
+    var offsetLength = 0;
     //Получить всех подписчиков
     var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: $scope.searchByThisPublic.gid, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
     return requireUsersSearch;
 
     function callUserSearch(r){
-      if(!r.response || r.response.users.length == 0){ //Когда все подписчики получены, получить список названий городов
-        parseCities();
-        return;
-      }
+      if(!r.response || r.response.users.length == 0) return;//Все подписчики получены, выходим
       $scope.$apply(function(){
         for(var i = 0; i < r.response.users.length; i++){
           $scope.usersFound.push(r.response.users[i]);
@@ -76,22 +72,6 @@ app.controller('appController', ['$scope', function($scope){
         console.log($scope.usersFound.length);
         offsetLength += 1000;
         VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
-      });
-    }
-
-    function parseCities(){ //Получение названий городов
-      for(var i = 0; i < $scope.usersFound.length; i++){
-        if($scope.allCities.indexOf($scope.usersFound[i].city) != -1) continue;
-        $scope.allCities.push($scope.usersFound[i].city);
-      }
-      VK.Api.call('database.getCitiesById', {city_ids: $scope.allCities}, function(r){
-        $scope.$apply(function(){
-          for(var i = 0; i < r.response.length; i++){
-            $scope.allCitiesNames.push(r.response[i].name);
-          }
-          $scope.cities.searchByThisCity.cid = $scope.allCities[0];
-          $scope.cities.searchByThisCity.title = $scope.allCitiesNames[0];
-        });
       });
     }
   };
