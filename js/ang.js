@@ -1,7 +1,7 @@
 var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
-  $scope.searchByThisPublic = ''; //По какому паблику искать, название
+  $scope.searchByThisPublic = {id: 0, name: ''}; //По какому паблику искать, название
   $scope.userData = {userId: '', userSubscriptions: []}; //Инфа о пользователе
   $scope.usersFound = new Array(); //Все подписчики паблика
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
@@ -14,7 +14,7 @@ app.controller('appController', ['$scope', function($scope){
   Object.defineProperty($scope.cities.searchByThisCity, 'cid', {enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра
     $scope.peopleFilterData.city = value;
   }});
-  getAllCountries($scope.countries.countriesList); //Получить список основных стран
+  getAllCountries(); //Получить список основных стран
 
   function getAllCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
@@ -28,8 +28,8 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.changeSearchCountry = function changeSearchCountry(index){
     $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
-    $scope.cities.searchByThisCity.title = ''; //Обнуляем города после изменения страны поиска
-    $scope.requestCities('');
+    $scope.cities.searchByThisCity.title = ''; //Сбрасываем город для поиска
+    $scope.requestCities(''); //Ищем все основные города новой страны
   };
 
   $scope.requestCities = function requestCities(str){
@@ -38,6 +38,7 @@ app.controller('appController', ['$scope', function($scope){
         if(!r.response) return;
         $scope.cities.citiesList = r.response;
         $scope.cities.searchByThisCity.cid = $scope.cities.citiesList[0].cid;
+        $scope.cities.searchByThisCity.title = $scope.cities.citiesList[0].title;
         $scope.usersLimit = 10;
       });
     });
@@ -49,7 +50,7 @@ app.controller('appController', ['$scope', function($scope){
       $scope.$apply(function(){
         if(!r.response) return;
         $scope.userData.userSubscriptions = r.response.slice();
-        $scope.searchByThisPublic = $scope.userData.userSubscriptions[0].name;
+        $scope.searchByThisPublic = $scope.userData.userSubscriptions[0];
       });
     });
     return requireUserObject;
@@ -58,15 +59,9 @@ app.controller('appController', ['$scope', function($scope){
   $scope.makeSearch = function makeSearch(){
     $scope.usersFound = new Array();
     var publicId;
-    for(var i = 0; i < $scope.userData.userSubscriptions.length; i++){
-      if($scope.userData.userSubscriptions[i].name == $scope.searchByThisPublic){
-        publicId = $scope.userData.userSubscriptions[i].gid;
-        break;
-      }
-    }
     var offsetLength = 1;
     //Получить всех подписчиков
-    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
+    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: $scope.searchByThisPublic.gid, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
     return requireUsersSearch;
 
     function callUserSearch(r){
@@ -104,7 +99,7 @@ app.controller('appController', ['$scope', function($scope){
 
 
   $scope.changeSearchPublic = function changeSearchPublic(index){
-    $scope.searchByThisPublic = $scope.userData.userSubscriptions[index].name;
+    $scope.searchByThisPublic = $scope.userData.userSubscriptions[index];
   };
 
   $scope.showMore = function showMore(){
