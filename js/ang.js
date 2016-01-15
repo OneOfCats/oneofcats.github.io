@@ -7,7 +7,6 @@ app.controller('appController', ['$scope', function($scope){
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
   $scope.peopleFilterData = {sex: '', city: 0}; //Поля для фильтра
   $scope.usersLimit = 10; //Сколько видно пользователей в прокрутке
-  $scope.usersFilteredAmount = 0; //Окончательное кол-во отфильтрованных подписчиков
   $scope.allCities = new Array(); //Все id городов найденных подписчиков
   $scope.allCitiesNames = new Array(); //Все названия городов
   $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
@@ -36,6 +35,8 @@ app.controller('appController', ['$scope', function($scope){
       $scope.$apply(function(){
         if(!r.response) return;
         $scope.cities.citiesList = r.response;
+        $scope.cities.searchByThisCity.cid = $scope.cities.citiesList[0].cid;
+        $scope.usersLimit = 10;
       });
     });
   };

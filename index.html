@@ -47,18 +47,6 @@
                   </ul>
                 </div>
                 <input type="text" ng-model="publicCompareNumber" pattern="^[0-9]+$" class="numeric">
-                <div class="select" data-toggle="select-open" data-select>
-                  <span>{{countries.searchByThisCountry.title}}</span>
-                  <ul>
-                    <li ng-repeat="country in countries.countriesList" ng-click="changeSearchCountry($index)">{{country.title}}</li>
-                  </ul>
-                </div>
-                <div class="select" data-toggle="select-open" data-select>
-                  <input type="text" placeholder="Город" ng-change="requestCities(cities.searchByThisCity.title);" ng-model="cities.searchByThisCity.title">
-                  <ul>
-                    <li ng-repeat="city in cities.citiesList" ng-click="changeSearchCity($index)">{{city.title}}</li>
-                  </ul>
-                </div>
                 <input type="submit" value="Поиск" class="red-submit">
             </div>
           </form>
@@ -71,8 +59,22 @@
       </tr>
       <tr>
         <td id="td3">
-          <span>Найдено: {{usersFilteredAmount}}</span><br>
-          <div class="user-found" ng-repeat="user in usersFound | peopleFilter:peopleFilterData:usersFilteredAmount | limitTo: usersLimit">
+          <div class="container">
+            <div class="select" data-toggle="select-open" data-select>
+              <span>{{countries.searchByThisCountry.title}}</span>
+              <ul>
+                <li ng-repeat="country in countries.countriesList" ng-click="changeSearchCountry($index)">{{country.title}}</li>
+              </ul>
+            </div>
+            <div class="select" data-toggle="select-open" data-select>
+              <input type="text" placeholder="Город" ng-change="requestCities(cities.searchByThisCity.title);" ng-model="cities.searchByThisCity.title">
+              <ul>
+                <li ng-repeat="city in cities.citiesList" ng-click="changeSearchCity($index)">{{city.title}}</li>
+              </ul>
+            </div>
+          </div>
+          <span>Найдено: {{filtered.length}}</span><br>
+          <div class="user-found" ng-repeat="user in filtered = (usersFound | peopleFilter:peopleFilterData:usersFilteredAmount | limitTo: usersLimit)">
             <a ng-href="http://vk.com/id{{user.uid}}">
               <img ng-src="{{user.photo_200}}">
               {{user.first_name}} {{user.last_name}}
