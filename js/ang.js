@@ -5,14 +5,17 @@ app.controller('appController', ['$scope', function($scope){
   $scope.userData = {userId: '', userSubscriptions: []}; //Инфа о пользователе
   $scope.usersFound = new Array(); //Все подписчики паблика
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
-  $scope.peopleFilterData = {sex: '', city: ''}; //Поля для фильтра
+  $scope.peopleFilterData = {sex: '', city: 0}; //Поля для фильтра
   $scope.usersLimit = 10; //Сколько видно пользователей в прокрутке
   $scope.usersFilteredAmount = 0; //Окончательное кол-во отфильтрованных подписчиков
   $scope.allCities = new Array(); //Все id городов найденных подписчиков
   $scope.allCitiesNames = new Array(); //Все названия городов
   $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
   getAllCountries($scope.countries.countriesList); //Получить список основных стран
-  $scope.cities = {citiesList: new Array(), searchByThisCity: {}};
+  $scope.cities = {citiesList: new Array(), searchByThisCity: {title: ''}}; //Объект, хранящий все найденные по строке города (в функции requestCities) и город, по которому ищем сейчас (ниже)
+  Object.defineProperty($scope.cities.searchByThisCity, cid, {writable: true, enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра
+    $scope.peopleFilterData.city = value;
+  }});
 
   function getAllCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
@@ -26,7 +29,6 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.changeSearchCountry = function changeSearchCountry(index){
     $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
-
   };
 
   $scope.requestCities = function requestCities(str){
@@ -89,7 +91,8 @@ app.controller('appController', ['$scope', function($scope){
           for(var i = 0; i < r.response.length; i++){
             $scope.allCitiesNames.push(r.response[i].name);
           }
-          $scope.searchByThisCity = {id: $scope.allCities[0], name: $scope.allCitiesNames[0]};
+          $scope.searchByThisCity.cid = $scope.allCities[0];
+          $scope.searchByThisCity.title = $scope.allCitiesNames[0];
         });
       });
     }
@@ -106,62 +109,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.changeSearchCity = function changeSearchCity(index){
-    $scope.cities.searchByThisCity = $scope.cities.citiesList[index];
+    $scope.cities.searchByThisCity.cid = $scope.cities.citiesList[index].cid;
+    $scope.cities.searchByThisCity.title = $scope.cities.citiesList[index].title;
   };
 }]);
-
-app.filter('peopleFilter', function(){
-  return function(objects, searchData, usersFilteredAmount){
-    var arrayOut = new Array();
-    var check = true;
-    for(var i = 0; i < objects.length; i++){
-      check = true;
-      for(var key in searchData){
-        if(searchData[key] && objects[i][key] != searchData[key]){
-          check = false;
-          break;
-        }
-      }
-      if(check) arrayOut.push(objects[i]);
-    }
-    usersFilteredAmount = arrayOut.length;
-    return arrayOut;
-  };
-});
-
-
-
-app.filter('indexFilter', function(){
-  return function(objects, maxIndex){
-    var arrayOut = new Array();
-    var checked = 0;
-
-
-
-    for(var i = indexData[0]; i < indexData[1]; i++){
-      arrayOut.push(objects[i]);
-    }
-    return arrayOut;
-
-    function checkUser(r){
-
-    }
-  };
-});
-
-app.filter('commonPublicsFilter', function(){
-  return function(objects, amount){
-    var arrayOut = new Array();
-    for(var i = 0; i < objects.length; i++){
-
-    }
-
-    function comparePublics(r){
-      var requireUserObject = VK.Api.call('users.getSubscriptions', {user_id: parseInt($scope.userData.userId), extended: 1}, function(r){
-        if(!r.response) return;
-        $scope.userData.userSubscriptions = r.response.slice();
-        $scope.searchByThisPublic = $scope.userData.userSubscriptions[0].name;
-      });
-    }
-  };
-});
