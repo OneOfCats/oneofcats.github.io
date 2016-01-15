@@ -13,7 +13,7 @@ app.controller('appController', ['$scope', function($scope){
   $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
   getAllCountries($scope.countries.countriesList); //Получить список основных стран
   $scope.cities = {citiesList: new Array(), searchByThisCity: {title: ''}}; //Объект, хранящий все найденные по строке города (в функции requestCities) и город, по которому ищем сейчас (ниже)
-  Object.defineProperty($scope.cities.searchByThisCity, 'cid', {writable: true, enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра
+  Object.defineProperty($scope.cities.searchByThisCity, 'cid', {enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра
     $scope.peopleFilterData.city = value;
   }});
 
