@@ -83,10 +83,14 @@ app.controller('appController', ['$scope', function($scope){
     }
 
     function getComparedSubscribers(){
-      $scope.usersFound = new Array();
-      for(var i = 1; i < $scope.subscribers.length; i++){
-        intersection_destructive($scope.subscribers[i - 1], $scope.subscribers[i], $scope.usersFound);
+      var commonUsers = $scope.subscribers[0];
+      if($scope.subscribers.length > 1){
+        for(var i = 1; i < $scope.subscribers.length; i++){
+          intersection_destructive(commonUsers, $scope.subscribers[i], $scope.usersFound);
+          commonUsers = $scope.usersFound;
+        }
       }
+      return $scope.usersFound;
 
       function intersection_destructive(a, b, result)
       {
@@ -123,6 +127,6 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.addPublic = function addPublic(){
     $scope.searchByThisPublics.push({gid: 0, name: ''});
-    subscribers.push(new Array());
+    $scope.subscribers.push(new Array());
   };
 }]);
