@@ -17,17 +17,26 @@ app.filter('peopleFilter', function(){
 });
 
 app.filter('commonPublicsFilter', function(){
-  return function(objects, amount){
+  return function(objects, userSubscriptions, commonAmount){
     var arrayOut = new Array();
     for(var i = 0; i < objects.length; i++){
-
+      comparePublics(i);
     }
+    return arrayOut;
 
-    function comparePublics(r){
-      var requireUserObject = VK.Api.call('users.getSubscriptions', {user_id: parseInt($scope.userData.userId), extended: 1}, function(r){
+    function comparePublics(index){
+      var requireUserObject = VK.Api.call('users.getSubscriptions', {user_id: objects[index].id, extended: 1}, function(r){
         if(!r.response) return;
-        $scope.userData.userSubscriptions = r.response.slice();
-        $scope.searchByThisPublic = $scope.userData.userSubscriptions[0].name;
+        var commonFound = 0;
+        for(var j = 0; j < r.response.length; j++){
+          for(var k = 0; k < userSubscriptions.length; k++){
+            if(userSubscriptions[k].gid == r.response[j].gid){
+              commonFound++;
+              break;
+            }
+          }
+        }
+        if(commonFound >= commonAmount) arrayOut.push(objects[index]);
       });
     }
   };

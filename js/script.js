@@ -4,17 +4,23 @@ document.addEventListener('keypress', keypressListen);
 function clickListen(event){
   var targ = event.target;
   var input = event.target.tagName == "INPUT" || event.target.tagName == "SELECT" || event.target.tagName == "TEXTAREA" || event.target.tagName == "A";
-  while(!targ.hasAttribute('data-toggle') && !targ.hasAttribute('data-toggle') && !targ.hasAttribute('scroll-up')){
-    if(targ == document.body){
-      var toggles = document.querySelectorAll('[data-toggle]');
-      for(var i = 0; i < toggles.length; i++){
-        toggles[i].classList.remove(toggles[i].getAttribute('data-toggle'));;
-      }
-      return;
-    }
+  while(!targ.hasAttribute('data-toggle') && !targ.hasAttribute('scroll-up') && targ != document.body){
     targ = targ.parentNode;
   }
-  if(targ.hasAttribute('data-toggle')){
+
+  var toggles = []; var list = document.querySelectorAll('[data-toggle]'); //Сброс всех открытых списков
+  for (var i = 0, ref = toggles.length = list.length; i < ref; i++) {
+   toggles[i] = list[i];
+  }
+  if(toggles.indexOf(targ) != -1){ //Не сбрасывать элемент, с которым сейчас взаимодействуем
+    toggles.splice(toggles.indexOf(targ), 1);
+  }
+  for(var i = 0; i < toggles.length; i++){
+    toggles[i].classList.remove(toggles[i].getAttribute('data-toggle'));;
+  }
+  if(targ == document.body) return;
+
+  if(targ.hasAttribute('data-toggle')){ //Выбор действия в зависиомсти от атрибута кликнутого элемента
     if(input){
       targ.classList.add(targ.getAttribute('data-toggle'));
     }else{
@@ -28,7 +34,6 @@ function clickListen(event){
   if(targ.hasAttribute('inactive')){
     event.preventDefault();
   }
-  return;
 }
 
 function keypressListen(event){

@@ -50,17 +50,17 @@
                 <input type="submit" value="Поиск" class="red-submit">
             </div>
           </form>
-          <div class="container labels">
-            <label for="rd1"><input type="radio" id="rd1" name="rd1" ng-model="peopleFilterData.sex" value="1"><span></span>Женский</label><br>
-            <label for="rd2"><input type="radio" id="rd2" name="rd1" ng-model="peopleFilterData.sex" value="2"><span></span>Мужской</label><br>
-            <label for="rd3"><input type="radio" id="rd3" name="rd1" ng-model="peopleFilterData.sex" value="" checked="true"><span></span>Любой</label>
-          </div>
         </td>
       </tr>
       <tr>
         <td id="td3">
           <div class="container">
-
+            <div class="container labels">
+              <label for="rd1"><input type="radio" id="rd1" name="rd1" ng-model="peopleFilterData.sex" value="1"><span></span>Женский</label><br>
+              <label for="rd2"><input type="radio" id="rd2" name="rd1" ng-model="peopleFilterData.sex" value="2"><span></span>Мужской</label><br>
+              <label for="rd3"><input type="radio" id="rd3" name="rd1" ng-model="peopleFilterData.sex" value="" checked="true"><span></span>Любой</label>
+            </div>
+            
             <div class="select" data-toggle="select-open" data-select>
               <span>{{countries.searchByThisCountry.title}}</span>
               <ul>
@@ -77,7 +77,7 @@
 
           </div>
           <span>Найдено: {{filtered.length}}</span><br>
-          <div class="user-found" ng-repeat="user in (filtered = (usersFound | peopleFilter:peopleFilterData)) | limitTo: usersLimit">
+          <div class="user-found" ng-repeat="user in (filtered = (usersFound | peopleFilter:peopleFilterData)) | commonPublicsFilter:userData.userSubscriptions:publicCompareNumber limitTo: usersLimit">
             <a ng-href="http://vk.com/id{{user.uid}}">
               <img ng-src="{{user.photo_200}}">
               {{user.first_name}} {{user.last_name}}
