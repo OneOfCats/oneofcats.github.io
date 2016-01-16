@@ -85,7 +85,7 @@ app.controller('appController', ['$scope', function($scope){
       for(var i = 1; i < $scope.searchByThisPublics.length; i++){
         intersection_destructive($scope.searchByThisPublics.subscribers[i - 1], $scope.searchByThisPublics.subscribers[i], $scope.usersFound);
       }
-      
+
       function intersection_destructive(a, b, result)
       {
         while( a.length > 0 && b.length > 0 )
@@ -120,6 +120,6 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.addPublic = function addPublic(){
-    $scope.searchByThisPublics.push({gid: 0, name: ''});
+    $scope.searchByThisPublics.push({gid: 0, name: '', subscribers: new Array()});
   };
 }]);
