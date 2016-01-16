@@ -45,7 +45,7 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.updateUser = function updateUser(){
     if($scope.userData.userId === undefined) return;
-    var requireUserObject = VK.Api.call('users.getSubscriptions', {user_id: parseInt($scope.userData.userId), extended: 1}, function(r){
+    var requireUserObject = VK.Api.call('users.getSubscriptions', {user_id: parseInt($scope.userData.userId), extended: 1, count: 200}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
         $scope.userData.userSubscriptions = r.response.slice();
