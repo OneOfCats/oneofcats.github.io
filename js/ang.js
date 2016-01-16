@@ -8,6 +8,7 @@ app.controller('appController', ['$scope', function($scope){
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
   $scope.peopleFilterData = {sex: '', city: 0}; //Поля для фильтра
   $scope.usersLimit = 10; //Сколько видно пользователей в прокрутке
+  $scope.loadingProcess = false; //Происходит ли загрузка (для отображения процесса загрузки)
   
   $scope.countries = {countriesList: new Array(), searchByThisCountry: {}};
   $scope.cities = {citiesList: new Array(), searchByThisCity: {title: ''}}; //Объект, хранящий все найденные по строке города (в функции requestCities) и город, по которому ищем сейчас (ниже)
@@ -56,6 +57,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.makeSearch = function makeSearch(){
+    $scope.loadingProcess = true; //Загрузка началась
     var uncheckedPublics = $scope.searchByThisPublics.length;
     for(var i = 0; i < $scope.searchByThisPublics.length; i++){
       $scope.subscribers[i] = new Array;
@@ -91,6 +93,7 @@ app.controller('appController', ['$scope', function($scope){
           commonUsers = intersection_destructive(commonUsers, $scope.subscribers[i], 'uid');
         }
       }
+      $scope.loadingProcess = false; //Загрузка закончилась
       return $scope.usersFound = commonUsers.slice();
 
       function intersection_destructive(a, b, str)

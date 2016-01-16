@@ -34,6 +34,7 @@
     </ul>
   </div>
   <div class="wrapper">
+    <div class="loading hidden"><img src="img/progress.gif" ng-show="loadingProcess"></div>
     <table>
       <tr>
         <td>
@@ -47,7 +48,7 @@
                 </ul>
               </div>
             </div>
-            <a ng-click="addPublic()">Добавить паблик</a>
+            <a ng-click="addPublic()" class="add">+</a>
             <input type="submit" value="Поиск" class="red-submit">
           </form>
         </td>

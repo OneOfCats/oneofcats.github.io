@@ -46,9 +46,6 @@ html, body{
 	font-family: Helvetica;
 	background: #f4f4f1;
 }
-body{
-	padding-top: 40px;
-}
 a{
 	cursor: pointer;
 }
@@ -96,7 +93,7 @@ h2{
 .container{
 	margin: 10px 0;
 }
-input, div.select, a.button{
+input, div.select, a.submit{
 	height: 44px;
 	line-height: 44px;
 	text-align: center;
@@ -157,7 +154,7 @@ div.select li{
 div.select ul li:hover{
 	background: rgba(0, 0, 0, 0.1);
 }
-input[type="submit"], a.button{
+input[type="submit"], a.submit{
 	display: inline-block;
 	background: #2c4d91;
 	color: white;
@@ -165,13 +162,17 @@ input[type="submit"], a.button{
 	height: 46px;
 	text-decoration: none;
 }
-input[type="submit"].alt-back, a.button.alt-back{
+a.submit{
+	padding: 0 20px;
+	width: auto;
+}
+input[type="submit"].alt-back, a.submit.alt-back{
 	background: #193e88;
 }
-input[type="submit"]:hover, a.button:hover{
+input[type="submit"]:hover, a.submit:hover{
 	background: #3b5da4;
 }
-input[type="submit"].alt-back:hover, , a.button.alt-back:hover{
+input[type="submit"].alt-back:hover, , a.submit.alt-back:hover{
 	background: #2953a9;
 }
 table input[type="radio"]{
@@ -324,4 +325,24 @@ div.select-open ul{
 }
 .select input[type="text"]{
 	margin: 0;
+}
+.loading{
+	height: 70px;
+	text-align: center;
+	vertical-align: middle;
+}
+.loading img{
+	height: 70%;
+}
+a.add{
+	display: inline-block;
+	background: #ababab;
+	border-radius: 30px;
+	height: 50px;
+	width: 50px;
+	line-height: 50px;
+	font-size: 40px;
+}
+a.add:hover, a.add:active{
+	background: #bababa;
 }
