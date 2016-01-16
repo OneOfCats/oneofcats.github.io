@@ -56,19 +56,21 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.makeSearch = function makeSearch(){
+    var uncheckedPublics = $scope.searchByThisPublics.length;
     for(var i = 0; i < $scope.searchByThisPublics.length; i++){
       $scope.subscribers[i] = new Array;
-      getSubscribers($scope.searchByThisPublics[i].gid, $scope.subscribers[i], i == $scope.searchByThisPublics.length - 1);
+      getSubscribers($scope.searchByThisPublics[i].gid, $scope.subscribers[i]);
     }
     
     //Получить всех подписчиков
-    function getSubscribers(publicId, usersArray, last){
+    function getSubscribers(publicId, usersArray){
       var offsetLength = 0;
       VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city', sort: 'id_asc'}, callUserSearch);
 
       function callUserSearch(r){
         if(!r.response || r.response.users.length == 0){//Все подписчики получены, выходим
-          $scope.$apply(function(){if(last) getComparedSubscribers()});
+          uncheckedPublics--; //Непроверенных пабликов стало на один меньше
+          $scope.$apply(function(){if(uncheckedPublics == 0) getComparedSubscribers()}); //Если непроверенных пабликов осталось ноль
           return;
         }
         $scope.$apply(function(){
