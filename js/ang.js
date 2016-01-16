@@ -36,11 +36,10 @@ app.controller('appController', ['$scope', function($scope){
 
   function requestCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
-      $scope.$apply(function(){
         if(!r.response) return;
         $scope.countries.countriesList = r.response.slice();
         $scope.changeSearchCountry(1);
-      });
+        $scope.$apply();
     });
   }
 
