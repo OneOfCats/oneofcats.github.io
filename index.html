@@ -34,13 +34,13 @@
     </ul>
   </div>
   <div class="wrapper">
-    <div class="loading hidden"><img src="img/progress.gif" ng-show="loadingProcess"></div>
+    <div class="loading"><img src="img/progress.gif" ng-show="loadingProcess"></div>
     <table>
       <tr>
         <td>
           <form ng-submit="makeSearch()">
             <input type="text" placeholder="Ваш id" ng-model="userData.userId" pattern="^[0-9]+$" required ng-change="updateUser();"><br>
-            <div class="justify" ng-repeat="publicForSearch in searchByThisPublics">
+            <div ng-repeat="publicForSearch in searchByThisPublics">
               <div class="select" data-toggle="select-open" data-select>
                 <span>{{publicForSearch.name}}</span>
                 <ul>
