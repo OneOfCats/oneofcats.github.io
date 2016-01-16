@@ -33,16 +33,16 @@ app.controller('appController', ['$scope', function($scope){
     $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
     $scope.requestCities('', true); //Ищем все основные города новой страны
   };
-  
+
   function requestCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
-        $scope.countries.countriesList = r.response;
+        $scope.countries.countriesList = r.response.slice();
         $scope.changeSearchCountry(1);
       });
     });
-  };
+  }
 
   $scope.updateUser = function updateUser(){
     if($scope.userData.userId === undefined) return;
