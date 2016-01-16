@@ -83,27 +83,31 @@ app.controller('appController', ['$scope', function($scope){
     }
 
     function getComparedSubscribers(){
-      var commonUsers = $scope.subscribers[0];
+      var commonUsers = $scope.subscribers[0].slice();
       if($scope.subscribers.length > 1){
         for(var i = 1; i < $scope.subscribers.length; i++){
-          intersection_destructive(commonUsers, $scope.subscribers[i], $scope.usersFound);
-          commonUsers = $scope.usersFound.slice();
+          commonUsers = intersection_destructive(commonUsers, $scope.subscribers[i], 'uid');
         }
       }
-      return $scope.usersFound;
+      return $scope.usersFound = commonUsers.slice();
 
-      function intersection_destructive(a, b, result)
+      function intersection_destructive(a, b, str)
       {
-        while( a.length > 0 && b.length > 0 )
-        {  
-           if      (a[0] < b[0] ){ a.shift(); }
-           else if (a[0] > b[0] ){ b.shift(); }
-           else
-           {
-             result.push(a.shift());
-             b.shift();
-           }
+        if(a.length < b.length){
+          var buff = a.slice();
+          a = b.slice();
+          b = buff;
         }
+        var arrayOut = new Array();
+        for(var i = 0; i < a.length; i++){
+          for(var j = 0; j < b.length; j++){
+            if(a[i][str] == b[j][str]){
+              arrayOut.push(a[i]);
+              break;
+            }
+          }
+        }
+        return arrayOut;
       }
     }
   };

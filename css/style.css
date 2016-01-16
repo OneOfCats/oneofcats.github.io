@@ -128,7 +128,7 @@ input[type="text"].numeric{
 	display: inline-block;
 }
 div.select{
-	width: 80%;
+	width: 100%;
 	position: relative;
 	cursor: pointer;
 	background: url(../img/select.png) 95% 50% no-repeat white;
