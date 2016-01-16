@@ -68,7 +68,7 @@ app.controller('appController', ['$scope', function($scope){
 
       function callUserSearch(r){
         if(!r.response || r.response.users.length == 0){//Все подписчики получены, выходим
-          if(last) getComparedSubscribers();
+          $scope.$apply(if(last) getComparedSubscribers());
           return;
         }
         $scope.$apply(function(){
@@ -87,7 +87,7 @@ app.controller('appController', ['$scope', function($scope){
       if($scope.subscribers.length > 1){
         for(var i = 1; i < $scope.subscribers.length; i++){
           intersection_destructive(commonUsers, $scope.subscribers[i], $scope.usersFound);
-          commonUsers = $scope.usersFound;
+          commonUsers = $scope.usersFound.slice();
         }
       }
       return $scope.usersFound;
