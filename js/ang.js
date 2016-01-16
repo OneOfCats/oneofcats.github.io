@@ -17,21 +17,6 @@ app.controller('appController', ['$scope', function($scope){
   }});
   requestCountries(); //Получить список основных стран
 
-  function requestCountries(){ //Получить список основных стран
-    VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
-      $scope.$apply(function(){
-        if(!r.response) return;
-        $scope.countries.countriesList = r.response;
-        $scope.changeSearchCountry(1);
-      });
-    });
-  };
-
-  $scope.changeSearchCountry = function changeSearchCountry(index){
-    $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
-    $scope.requestCities('', true); //Ищем все основные города новой страны
-  };
-
   $scope.requestCities = function requestCities(str, reset){
     VK.Api.call('database.getCities', {country_id: $scope.countries.searchByThisCountry.cid, q: str, count: 5}, function(r){
       $scope.$apply(function(){
@@ -40,6 +25,21 @@ app.controller('appController', ['$scope', function($scope){
         $scope.cities.searchByThisCity.cid = $scope.cities.citiesList[0].cid;
         if(reset) $scope.cities.searchByThisCity.title = $scope.cities.citiesList[0].title;
         $scope.usersLimit = 10;
+      });
+    });
+  };
+
+  $scope.changeSearchCountry = function changeSearchCountry(index){
+    $scope.countries.searchByThisCountry = $scope.countries.countriesList[index];
+    $scope.requestCities('', true); //Ищем все основные города новой страны
+  };
+  
+  function requestCountries(){ //Получить список основных стран
+    VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
+      $scope.$apply(function(){
+        if(!r.response) return;
+        $scope.countries.countriesList = r.response;
+        $scope.changeSearchCountry(1);
       });
     });
   };
