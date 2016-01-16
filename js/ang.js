@@ -69,7 +69,7 @@ app.controller('appController', ['$scope', function($scope){
         }
         console.log($scope.usersFound.length);
         offsetLength += 1000;
-        VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
+        VK.Api.call('groups.getMembers', {group_id: $scope.searchByThisPublic.gid, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
       });
     }
   };
