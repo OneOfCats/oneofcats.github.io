@@ -57,7 +57,7 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.makeSearch = function makeSearch(){
     for(var i = 0; i < $scope.searchByThisPublics.length; i++){
-      $scope.subscribers[i] = 0;
+      $scope.subscribers[i] = new Array;
       getSubscribers($scope.searchByThisPublics[i].gid, $scope.subscribers[i], i == $scope.searchByThisPublics.length - 1);
     }
     
@@ -122,6 +122,7 @@ app.controller('appController', ['$scope', function($scope){
   };
 
   $scope.addPublic = function addPublic(){
-    $scope.searchByThisPublics.push({gid: 0, name: '', subscribers: new Array()});
+    $scope.searchByThisPublics.push({gid: 0, name: ''});
+    subscribers.push(new Array());
   };
 }]);
