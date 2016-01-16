@@ -68,7 +68,7 @@ app.controller('appController', ['$scope', function($scope){
 
       function callUserSearch(r){
         if(!r.response || r.response.users.length == 0){//Все подписчики получены, выходим
-          $scope.$apply(if(last) getComparedSubscribers());
+          $scope.$apply(function(){if(last) getComparedSubscribers()});
           return;
         }
         $scope.$apply(function(){
