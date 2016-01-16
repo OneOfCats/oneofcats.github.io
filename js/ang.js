@@ -2,7 +2,8 @@ var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
   $scope.userData = {userId: '', userSubscriptions: []}; //Инфа о пользователе
-  $scope.searchByThisPublics = [{gid: 0, name: '', subscribers: new Array()}]; //По каким пабликам, id и название
+  $scope.searchByThisPublics = [{gid: 0, name: ''}]; //По каким пабликам, id и название
+  $scope.subscribers = new Array(); //Подписчики каждого паблика из searchByThisPublics (по порядку)
   $scope.usersFound = new Array(); //Все подписчики пабликов
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
   $scope.peopleFilterData = {sex: '', city: 0}; //Поля для фильтра
@@ -56,7 +57,8 @@ app.controller('appController', ['$scope', function($scope){
 
   $scope.makeSearch = function makeSearch(){
     for(var i = 0; i < $scope.searchByThisPublics.length; i++){
-      getSubscribers($scope.searchByThisPublics[i].gid, $scope.searchByThisPublics[i].subscribers, i == $scope.searchByThisPublics.length - 1);
+      $scope.subscribers[i] = 0;
+      getSubscribers($scope.searchByThisPublics[i].gid, $scope.subscribers[i], i == $scope.searchByThisPublics.length - 1);
     }
     
     //Получить всех подписчиков
@@ -82,8 +84,8 @@ app.controller('appController', ['$scope', function($scope){
 
     function getComparedSubscribers(){
       $scope.usersFound = new Array();
-      for(var i = 1; i < $scope.searchByThisPublics.length; i++){
-        intersection_destructive($scope.searchByThisPublics.subscribers[i - 1], $scope.searchByThisPublics.subscribers[i], $scope.usersFound);
+      for(var i = 1; i < $scope.subscribers.length; i++){
+        intersection_destructive($scope.subscribers[i - 1], $scope.subscribers[i], $scope.usersFound);
       }
 
       function intersection_destructive(a, b, result)
