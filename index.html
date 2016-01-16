@@ -39,16 +39,16 @@
         <td>
           <form ng-submit="makeSearch()">
             <input type="text" placeholder="Ваш id" ng-model="userData.userId" pattern="^[0-9]+$" required ng-change="updateUser();"><br>
-            <div class="justify">
-                <div class="select" data-toggle="select-open" data-select>
-                  <span>{{searchByThisPublic.name}}</span>
-                  <ul>
-                    <li ng-repeat="public in userData.userSubscriptions" ng-click="changeSearchPublic($index)">{{public.name}}</li>
-                  </ul>
-                </div>
-                <input type="text" ng-model="publicCompareNumber" pattern="^[0-9]+$" class="numeric">
-                <input type="submit" value="Поиск" class="red-submit">
+            <div class="justify" ng-repeat="publicForSearch in searchByThisPublics">
+              <div class="select" data-toggle="select-open" data-select>
+                <span>{{publicForSearch.name}}</span>
+                <ul>
+                  <li ng-repeat="public in userData.userSubscriptions" ng-click="changeSearchPublic($index, $parent.$index)">{{public.name}}</li>
+                </ul>
+              </div>
             </div>
+            <a ng-click="addPublic()" ng-show="">Добавить паблик</a>
+            <input type="submit" value="Поиск" class="red-submit">
           </form>
         </td>
       </tr>

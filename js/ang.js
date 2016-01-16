@@ -2,8 +2,8 @@ var app = angular.module('application', []);
 
 app.controller('appController', ['$scope', function($scope){
   $scope.userData = {userId: '', userSubscriptions: []}; //Инфа о пользователе
-  $scope.searchByThisPublic = {id: 0, name: ''}; //По какому паблику искать, id и название
-  $scope.usersFound = new Array(); //Все подписчики паблика
+  $scope.searchByThisPublics = [{gid: 0, name: '', subscribers: new Array()}]; //По каким пабликам, id и название
+  $scope.usersFound = new Array(); //Все подписчики пабликов
   $scope.publicCompareNumber = 4; //Сколько общих пабликов
   $scope.peopleFilterData = {sex: '', city: 0}; //Поля для фильтра
   $scope.usersLimit = 10; //Сколько видно пользователей в прокрутке
@@ -13,9 +13,9 @@ app.controller('appController', ['$scope', function($scope){
   Object.defineProperty($scope.cities.searchByThisCity, 'cid', {enumerable: true, set: function(value){//Задаём город, по которому ищем сейчас, свойством, чтоб при его изменении менялось значение в объекте фильтра
     $scope.peopleFilterData.city = value;
   }});
-  getAllCountries(); //Получить список основных стран
+  requestCountries(); //Получить список основных стран
 
-  function getAllCountries(){ //Получить список основных стран
+  function requestCountries(){ //Получить список основных стран
     VK.Api.call('database.getCountries', {need_all: 0, count: 5}, function(r){
       $scope.$apply(function(){
         if(!r.response) return;
@@ -48,36 +48,66 @@ app.controller('appController', ['$scope', function($scope){
       $scope.$apply(function(){
         if(!r.response) return;
         $scope.userData.userSubscriptions = r.response.slice();
-        $scope.searchByThisPublic = $scope.userData.userSubscriptions[0];
+        $scope.searchByThisPublics[0] = $scope.userData.userSubscriptions[0];
       });
     });
     return requireUserObject;
   };
 
   $scope.makeSearch = function makeSearch(){
-    $scope.usersFound = new Array();
-    var offsetLength = 0;
+    for(var i = 0; i < $scope.searchByThisPublics.length; i++){
+      getSubscribers($scope.searchByThisPublics[i].gid, $scope.searchByThisPublics[i].subscribers, i == $scope.searchByThisPublics.length - 1);
+    }
+    
     //Получить всех подписчиков
-    var requireUsersSearch = VK.Api.call('groups.getMembers', {group_id: $scope.searchByThisPublic.gid, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
-    return requireUsersSearch;
+    function getSubscribers(publicId, usersArray, last){
+      var offsetLength = 0;
+      VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city', sort: 'id_asc'}, callUserSearch);
 
-    function callUserSearch(r){
-      if(!r.response || r.response.users.length == 0) return;//Все подписчики получены, выходим
-      $scope.$apply(function(){
-        for(var i = 0; i < r.response.users.length; i++){
-          $scope.usersFound.push(r.response.users[i]);
+      function callUserSearch(r){
+        if(!r.response || r.response.users.length == 0){//Все подписчики получены, выходим
+          if(last) getComparedSubscribers();
+          return;
         }
-        console.log($scope.usersFound.length);
-        offsetLength += 1000;
-        VK.Api.call('groups.getMembers', {group_id: $scope.searchByThisPublic.gid, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city'}, callUserSearch);
-      });
+        $scope.$apply(function(){
+          for(var i = 0; i < r.response.users.length; i++){
+            usersArray.push(r.response.users[i]);
+          }
+          console.log(usersArray.length);
+          offsetLength += 1000;
+          VK.Api.call('groups.getMembers', {group_id: publicId, count: 1000, offset: offsetLength, fields: 'sex, photo_200, city', sort: 'id_asc'}, callUserSearch);
+        });
+      }
+    }
+
+    function getComparedSubscribers(){
+      $scope.usersFound = new Array();
+      for(var i = 1; i < $scope.searchByThisPublics.length; i++){
+        intersection_destructive($scope.searchByThisPublics.subscribers[i - 1], $scope.searchByThisPublics.subscribers[i], $scope.usersFound);
+      }
+      
+      function intersection_destructive(a, b, result)
+      {
+        while( a.length > 0 && b.length > 0 )
+        {  
+           if      (a[0] < b[0] ){ a.shift(); }
+           else if (a[0] > b[0] ){ b.shift(); }
+           else
+           {
+             result.push(a.shift());
+             b.shift();
+           }
+        }
+      }
     }
   };
 
+  $scope.getAllSubscribers = function getAllSubscribers(){
 
+  };
 
-  $scope.changeSearchPublic = function changeSearchPublic(index){
-    $scope.searchByThisPublic = $scope.userData.userSubscriptions[index];
+  $scope.changeSearchPublic = function changeSearchPublic(index, parentIndex){
+    $scope.searchByThisPublics[parentIndex] = $scope.userData.userSubscriptions[index];
   };
 
   $scope.showMore = function showMore(){
@@ -87,5 +117,9 @@ app.controller('appController', ['$scope', function($scope){
   $scope.changeSearchCity = function changeSearchCity(index){
     $scope.cities.searchByThisCity.cid = $scope.cities.citiesList[index].cid;
     $scope.cities.searchByThisCity.title = $scope.cities.citiesList[index].title;
+  };
+
+  $scope.addPublic = function addPublic(){
+    $scope.searchByThisPublics.push({gid: 0, name: ''});
   };
 }]);
